@@ -28,7 +28,7 @@
 <meta property="og:description" content="题目A,B比较简单，略去不讲。 C. Tsundoku 因为只能顺序选择两个书架里的书，所以定义前缀数组\(a_{k} &#x3D; \sum_{i&#x3D;1}^{k}A_{i}\)，\(b_{k} &#x3D; \sum_{i&#x3D;1}^{k}B_{i}\)。 题意归结为:对于满足条件\(a_{i} + b_{j}≤K\)的整数 \(i, j (0 ≤ i ≤ N, 0 ≤ j ≤ M)\)，找到\(i+j\)的最大值。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-07-05T05:15:00.086Z">
-<meta property="article:modified_time" content="2020-07-05T12:14:49.694Z">
+<meta property="article:modified_time" content="2020-07-05T12:26:21.957Z">
 <meta property="article:author" content="Kuo">
 <meta name="twitter:card" content="summary">
 
@@ -235,7 +235,7 @@
 <p>题意：考虑长度为N的序列对<span class="math inline">\(A_{1}...A_{N}和B_{1}...B_{N}\)</span>，其中所有的数都在<span class="math inline">\(1\)</span>到<span class="math inline">\(M\)</span>之间(<span class="math inline">\(N \leq M\)</span>)，求满足以下条件的序列对数量(mod 10^9+7)<br />
 (1) 对于任意 <span class="math inline">\(1 \leq i \leq N\)</span>，<span class="math inline">\(A_{i} \neq B_{i}\)</span>。<br />
 (2) 对于任意<span class="math inline">\(1 \leq i &lt; j \leq N\)</span>，<span class="math inline">\(A_{i} \neq A_{j}\)</span>并且<span class="math inline">\(B_{i} \neq B_{j}\)</span>。</p>
-<p>思路：有不少于<span class="math inline">\(k\)</span>个元素相等的序列对数量为<span class="math inline">\(C_{N}^{k} \times \tbinom{M}{k} \times (\tbinom{M-k}{N-k})^2\)</span>，采用容斥原理，最终结果为<span class="math inline">\(\sum_{k=0}^{N}(-1)^{k} \times C_{N}^{k} \times \tbinom{M}{k} \times (\tbinom{M-k}{N-k})^2\)</span>。</p>
+<p>思路：满足A序列中元素两两不等，B序列中元素两两不等，且A，B序列有不少于<span class="math inline">\(k\)</span>个元素相等的条件的序列对数量为<span class="math inline">\(C_{N}^{k} \times \tbinom{M}{k} \times (\tbinom{M-k}{N-k})^2\)</span>，采用容斥原理，最终结果为<span class="math inline">\(\sum_{k=0}^{N}(-1)^{k} \times C_{N}^{k} \times \tbinom{M}{k} \times (\tbinom{M-k}{N-k})^2\)</span>。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h2 id="f---unfair-nim">F - Unfair Nim</h2>
 <p>题意：</p>
