@@ -264,7 +264,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>176</span>
+              <span>262</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -285,7 +285,9 @@
       
           <p>题目A,B比较简单，略去不讲。</p>
 <h2 id="c.-tsundoku">C. Tsundoku</h2>
-<p>因为只能顺序选择两个书架里的书，所以定义前缀数组<span class="math inline">\(a_{k} = \sum_{i=0}^{k}A_{i}\)</span> , <span class="math inline">\(b_{k} = \sum_{i=0}^{k}B_{i}\)</span>. 题意归结为:对于满足条件<span class="math inline">\(a_{i} + b_{j}≤K\)</span>的整数 <span class="math inline">\(i, j (0 ≤ i ≤ N, 0 ≤ j ≤ M)\)</span> , 找到<span class="math inline">\(i+j\)</span>的最大值.</p>
+<p>因为只能顺序选择两个书架里的书，所以定义前缀数组<span class="math inline">\(a_{k} = \sum_{i=0}^{k}A_{i}\)</span> ， <span class="math inline">\(b_{k} = \sum_{i=0}^{k}B_{i}\)</span>。 题意归结为:对于满足条件<span class="math inline">\(a_{i} + b_{j}≤K\)</span>的整数 <span class="math inline">\(i, j (0 ≤ i &lt; N, 0 ≤ j &lt; M)\)</span> ， 找到<span class="math inline">\(i+j\)</span>的最大值。</p>
+<p>解法：从前到后扫描i，在每一个i下找到满足<span class="math inline">\(b_{j} &lt; K - a_{i}\)</span>的最大整数j，不难发现j是递减的，因此i是从0到N-1，j是从M-1到0。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
       
     </div>
