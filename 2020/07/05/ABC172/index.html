@@ -28,7 +28,7 @@
 <meta property="og:description" content="题目A,B比较简单，略去不讲。 C. Tsundoku 因为只能顺序选择两个书架里的书，所以定义前缀数组\(a_{k} &#x3D; \sum_{i&#x3D;1}^{k}A_{i}\)，\(b_{k} &#x3D; \sum_{i&#x3D;1}^{k}B_{i}\)。 题意归结为:对于满足条件\(a_{i} + b_{j}≤K\)的整数 \(i, j (0 ≤ i ≤ N, 0 ≤ j ≤ M)\)，找到\(i+j\)的最大值。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-07-05T05:15:00.086Z">
-<meta property="article:modified_time" content="2020-07-05T11:07:26.133Z">
+<meta property="article:modified_time" content="2020-07-05T11:17:21.052Z">
 <meta property="article:author" content="Kuo">
 <meta name="twitter:card" content="summary">
 
@@ -203,7 +203,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.3k</span>
+              <span>1.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -231,7 +231,10 @@
 <p>题意: 对于任意整数<span class="math inline">\(x\)</span>，令<span class="math inline">\(f(x)\)</span>表示其正因子个数。输入整数N，求<span class="math inline">\(\sum_{k=1}^{N} k \times f(k)\)</span>.<br />
 思路: 按照通常做法，对于任意整数<span class="math inline">\(x\)</span>，在<span class="math inline">\(O(sqrt(x))\)</span>时间复杂度内可以求出<span class="math inline">\(x\)</span>的正因子个数，然而本题会超时。 只能换个方向思考，题目中所求可以用伪码写成 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ans &#x3D; 0</span><br><span class="line">for i in  1...N</span><br><span class="line">  for j in 1...N</span><br><span class="line">    if(i % j &#x3D;&#x3D; 0) </span><br><span class="line">         ans +&#x3D; i;</span><br><span class="line">print(ans)</span><br></pre></td></tr></table></figure> 也等价于 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ans &#x3D; 0</span><br><span class="line">for j in  1...N</span><br><span class="line">  for i in 1...N</span><br><span class="line">    if(i % j &#x3D;&#x3D; 0) </span><br><span class="line">         ans +&#x3D; i;</span><br><span class="line">print(ans)</span><br></pre></td></tr></table></figure> 因此，若令<span class="math inline">\(h(j)\)</span>表示在<span class="math inline">\(1...N\)</span>范围内的为<span class="math inline">\(j\)</span>倍数的个数，即<span class="math inline">\(h(j) = N/j\)</span>，则结果为<span class="math inline">\(\sum_{j=1}^{N}(\sum_{i=1}^{h(j)}j)\)</span>。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//O(N)</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n;</span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">long</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; n;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">long</span> <span class="keyword">long</span> j = <span class="number">1</span>; j &lt;= n; j++)&#123;</span><br><span class="line">        <span class="keyword">long</span> <span class="keyword">long</span> h = n/j;</span><br><span class="line">        ans += j*(<span class="number">1</span>+h)*h/<span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="e">E</h2>
+<h2 id="e---neq">E - NEQ</h2>
+<p>题意：考虑长度为N的序列对<span class="math inline">\(A_{1}...A{N}和B_{1}...B_{N}\)</span>，其中所有的数都在<span class="math inline">\(1到M\)</span>之间，求满足以下条件的序列对数量。<br />
+(1) 对于任意 <span class="math inline">\(1 \leq i \leq N\)</span>，$A_{i} B_{i}。<br />
+(2) 对于任意<span class="math inline">\(1 \leq i \leq j \leq N\)</span>，$ A_{i} A_{j}<span class="math inline">\(并且\)</span>B_{i}  neq B_{j}$。</p>
 
     </div>
 
@@ -312,7 +315,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#c.-tsundoku"><span class="nav-number">1.</span> <span class="nav-text">C. Tsundoku</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#d.sum-of-divisors"><span class="nav-number">2.</span> <span class="nav-text">D.Sum of Divisors</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#e"><span class="nav-number">3.</span> <span class="nav-text">E</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#c.-tsundoku"><span class="nav-number">1.</span> <span class="nav-text">C. Tsundoku</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#d.sum-of-divisors"><span class="nav-number">2.</span> <span class="nav-text">D.Sum of Divisors</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#e---neq"><span class="nav-number">3.</span> <span class="nav-text">E - NEQ</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
