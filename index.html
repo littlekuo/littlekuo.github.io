@@ -205,7 +205,7 @@
           <h1 id="part-1-环境搭建">Part 1 环境搭建</h1>
 <ol type="1">
 <li>安装基本的编译调试工具，gcc, gdb, qemu</li>
-<li>建议使用IDE，如vscode或clion，这里我使用的是clion，然后去clion的插件市场安装makefile support，安装完成后右侧会有一个 make 菜单如下。 <img src="/.com//clion-make.JPG" alt="clion-make"></li>
+<li>建议使用IDE，如vscode或clion，这里我使用的是clion，然后去clion的插件市场安装makefile support，安装完成后右侧会有一个 make 菜单如下。 <a href="clion-make.JPG">clion-make</a></li>
 <li>使用makefile。
 <ul>
 <li>编译 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">% sudo make all</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">可能报错：</span><br><span class="line">ld: warning: section &#96;.bss&#39; type changed to PROGBITS</span><br><span class="line">obj&#x2F;kern&#x2F;printfmt.o: In function &#96;printnum&#39;:</span><br><span class="line">lib&#x2F;printfmt.c:41: undefined reference to &#96;__udivdi3&#39;</span><br><span class="line">lib&#x2F;printfmt.c:49: undefined reference to &#96;__umoddi3&#39;</span><br><span class="line">kern&#x2F;Makefrag:70: recipe for target &#39;obj&#x2F;kern&#x2F;kernel&#39; failed</span><br><span class="line">make: *** [obj&#x2F;kern&#x2F;kernel] Error 1</span><br><span class="line">解决方法：</span><br><span class="line">% sudo apt-get install gcc-4.8-multilib</span><br></pre></td></tr></table></figure></li>
@@ -213,7 +213,7 @@
 </ul></li>
 <li>断点调试
 <ul>
-<li>建议使用CLion自带的Remote GDB Server配置，先点击"Edit Configurations"添加配置，然后新添加"GDB Remote Debug" <img src="/.com//gdb-server1.JPG" alt="gdb-server1"> <img src="/.com//gdb-server2.JPG" alt="gdb-server2"> 注意：
+<li>建议使用CLion自带的Remote GDB Server配置，先点击"Edit Configurations"添加配置，然后新添加"GDB Remote Debug" <a href="6-828-Lab1/gdb-server1.JPG">gdb-server1</a> <img src="/.com//gdb-server2.JPG" alt="gdb-server2"> 注意：
 <ul>
 <li>名称：随便取一个，这里叫做gdb-remote</li>
 <li>GDB：默认的gdb是CLion自带，需要改成系统安装的，和qemu启动的服务保持一致，路径填为/usr/bin/gdb就好</li>
@@ -1090,7 +1090,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">24 分钟</span>
+    <span title="站点阅读时长">25 分钟</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>
