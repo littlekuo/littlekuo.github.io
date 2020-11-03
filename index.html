@@ -150,6 +150,107 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/11/03/6-828-Lab1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Kuo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="月落星稀">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/03/6-828-Lab1/" class="post-title-link" itemprop="url">6.828-Lab1</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-03 13:58:10" itemprop="dateCreated datePublished" datetime="2020-11-03T13:58:10+08:00">2020-11-03</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="part-1-环境搭建">Part 1 环境搭建</h1>
+<ol type="1">
+<li>安装基本的编译调试工具，gcc, gdb, qemu</li>
+<li>建议使用IDE，如vscode或clion，这里我使用的是clion，然后去clion的插件市场安装makefile support，安装完成后右侧会有一个 make 菜单如下。 <img src="/.com//clion-make.JPG" alt="clion-make"></li>
+<li>使用makefile。
+<ul>
+<li>编译 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">% sudo make all</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">可能报错：</span><br><span class="line">ld: warning: section &#96;.bss&#39; type changed to PROGBITS</span><br><span class="line">obj&#x2F;kern&#x2F;printfmt.o: In function &#96;printnum&#39;:</span><br><span class="line">lib&#x2F;printfmt.c:41: undefined reference to &#96;__udivdi3&#39;</span><br><span class="line">lib&#x2F;printfmt.c:49: undefined reference to &#96;__umoddi3&#39;</span><br><span class="line">kern&#x2F;Makefrag:70: recipe for target &#39;obj&#x2F;kern&#x2F;kernel&#39; failed</span><br><span class="line">make: *** [obj&#x2F;kern&#x2F;kernel] Error 1</span><br><span class="line">解决方法：</span><br><span class="line">% sudo apt-get install gcc-4.8-multilib</span><br></pre></td></tr></table></figure></li>
+<li>运行 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make qemu 或者 make qemu-nox</span><br></pre></td></tr></table></figure></li>
+</ul></li>
+<li>断点调试
+<ul>
+<li>建议使用CLion自带的Remote GDB Server配置，先点击"Edit Configurations"添加配置，然后新添加"GDB Remote Debug" <img src="/.com//gdb-server1.JPG" alt="gdb-server1"> <img src="/.com//gdb-server2.JPG" alt="gdb-server2"> 注意：
+<ul>
+<li>名称：随便取一个，这里叫做gdb-remote</li>
+<li>GDB：默认的gdb是CLion自带，需要改成系统安装的，和qemu启动的服务保持一致，路径填为/usr/bin/gdb就好</li>
+<li>'target remote' args：指定了调试服务器的IP和端口，IP是localhost不用多说，此处端口要和qemu启动的端口一致。查看项目根目录下的.gdbinit文件，在22行左右可以看到端口号为26000号端口</li>
+</ul></li>
+<li>使用配置文件.gdbinit，在终端运行gdb时，gdb会查找当前目录下是否有名为.gdbinit的文件，若有则自动读取配置，从而简化在终端写gdb参数的操作。在此项目中，运行make qemu-nox-gdb后会自动生成一个.gdbinit。<br>
+  在此之前，需要放开安全限制，让gdb放心地读当前目录下的文件。在当前用户home目录下创建.gdbinit文件，配置如下内容： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set auto-load safe-path &#x2F;</span><br></pre></td></tr></table></figure>   此外还需要修改配置以避免配置之间的冲突。具体来说，target remote在CLion中必须配置，故我们需要在.gdbinit和.gdbinit.tmpl中将22，23行的相应配置注释掉 <img src="/.com//gdbinit.JPG" alt="gdbinit">    .gdbinit中指定的symbol-file才能参与调试。内核和引导器没有编译在同一个文件中，默认情况下，Symbol File指定的是内核而不是引导器。若需要在boot目录下的文件中打断点，就必须更改symbol file为引导器的编译结果obj/boot/boot.out。一个gdb配置文件只能设置一个symbol file，后出现的配置会覆盖前出现的配置。</li>
+</ul></li>
+</ol>
+<p>5.The ROM BIOS, 先执行qemu-nox-gdb，然后执行前面设置的gdb-remote <img src="/.com//bios-rom.JPG" alt="bions"> 可以看到，第一个执行的指令是ljmp ，地址在 0xffff0，写成 (CS:IP) 形式就是 [f000:fff0] 。可以得到如下信息： - 计算机启动后从 0xffff0 开始执行指令，也就是CS = 0xf000,IP = 0xfff0 (real mode下的地址转换规则，physical address = 16 * segment + offset )</p>
+<p>BISO映射到物理内存的 0xF0000-0x100000，不难算出 0xffff0 和BIOS映射区的顶部 0x100000 只差16, 16个字节并不能做什么，因此需要跳转，也即ljmp</p>
+<figure>
+<img src="/.com//phyAdrss.JPG" alt><figcaption>phyaddrss</figcaption>
+</figure>
+<h1 id="part-2-boot-loader">Part 2 Boot Loader</h1>
+<p>6.828所使用的引导方式，依旧是BIOS，以求简单。</p>
+<p>BIOS初始化IO完成之后，查看各个存储设备，包括软盘、磁盘、SSD，以及USB连接的各种设备，找到可以引导的 (Bootable) 设备，将这个设备的第一个区块sector读取进入内存，并开始执行读取进来的内容。</p>
+<p>在本项目中，BIOS读进来的是内核引导器，而不是内核本身。BIOS引导了内核引导器，内核引导器再引导内核。如果要使用BIOS，就必须将内核引导器放置在设备的第一个sector中，这样BIOS才能够找到。我们的项目中，内核引导器是两个文件，一个是汇编代码boot/boot.S，一个是C文件boot/main.c。它一共做了两件事情：</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/10/27/Muduo%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0_base%E9%83%A8%E5%88%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -357,14 +458,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.7k</span>
+              <span>2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>4 分钟</span>
             </span>
 
         </div>
@@ -403,6 +504,9 @@
 <img src="/2020/09/17/MIT%206/phyAdrss.JPG" alt><figcaption>phyaddrss</figcaption>
 </figure>
 <h1 id="part-2-boot-loader">Part 2 Boot Loader</h1>
+<p>6.828所使用的引导方式，依旧是BIOS，以求简单。</p>
+<p>BIOS初始化IO完成之后，查看各个存储设备，包括软盘、磁盘、SSD，以及USB连接的各种设备，找到可以引导的 (Bootable) 设备，将这个设备的第一个区块sector读取进入内存，并开始执行读取进来的内容。</p>
+<p>在本项目中，BIOS读进来的是内核引导器，而不是内核本身。BIOS引导了内核引导器，内核引导器再引导内核。如果要使用BIOS，就必须将内核引导器放置在设备的第一个sector中，这样BIOS才能够找到。我们的项目中，内核引导器是两个文件，一个是汇编代码boot/boot.S，一个是C文件boot/main.c。它一共做了两件事情：</p>
 
       
     </div>
@@ -914,7 +1018,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -965,12 +1069,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">9k</span>
+    <span title="站点总字数">12k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">19 分钟</span>
+    <span title="站点阅读时长">23 分钟</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>

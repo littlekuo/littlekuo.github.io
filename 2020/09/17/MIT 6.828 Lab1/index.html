@@ -34,7 +34,7 @@
 <meta property="og:image" content="http://yoursite.com/2020/09/17/MIT%206/bios-rom.JPG">
 <meta property="og:image" content="http://yoursite.com/2020/09/17/MIT%206/phyAdrss.JPG">
 <meta property="article:published_time" content="2020-09-17T11:58:49.094Z">
-<meta property="article:modified_time" content="2020-11-03T05:54:53.538Z">
+<meta property="article:modified_time" content="2020-11-03T05:56:38.243Z">
 <meta property="article:author" content="Kuo">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://yoursite.com/2020/09/17/MIT%206/clion-make.JPG">
@@ -210,14 +210,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.7k</span>
+              <span>2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>4 分钟</span>
             </span>
 
         </div>
@@ -256,6 +256,9 @@
 <img src="/2020/09/17/MIT%206/phyAdrss.JPG" alt><figcaption>phyaddrss</figcaption>
 </figure>
 <h1 id="part-2-boot-loader">Part 2 Boot Loader</h1>
+<p>6.828所使用的引导方式，依旧是BIOS，以求简单。</p>
+<p>BIOS初始化IO完成之后，查看各个存储设备，包括软盘、磁盘、SSD，以及USB连接的各种设备，找到可以引导的 (Bootable) 设备，将这个设备的第一个区块sector读取进入内存，并开始执行读取进来的内容。</p>
+<p>在本项目中，BIOS读进来的是内核引导器，而不是内核本身。BIOS引导了内核引导器，内核引导器再引导内核。如果要使用BIOS，就必须将内核引导器放置在设备的第一个sector中，这样BIOS才能够找到。我们的项目中，内核引导器是两个文件，一个是汇编代码boot/boot.S，一个是C文件boot/main.c。它一共做了两件事情：</p>
 
     </div>
 
@@ -352,7 +355,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -403,12 +406,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">9k</span>
+    <span title="站点总字数">12k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">19 分钟</span>
+    <span title="站点阅读时长">23 分钟</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>
