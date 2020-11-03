@@ -33,8 +33,9 @@
 <meta property="og:image" content="http://yoursite.com/.com//gdbinit.JPG">
 <meta property="og:image" content="http://yoursite.com/.com//bios-rom.JPG">
 <meta property="og:image" content="http://yoursite.com/.com//phyAdrss.JPG">
+<meta property="og:image" content="http://yoursite.com/.com//e_entry.JPG">
 <meta property="article:published_time" content="2020-11-03T05:58:10.000Z">
-<meta property="article:modified_time" content="2020-11-03T06:19:29.422Z">
+<meta property="article:modified_time" content="2020-11-03T07:05:08.625Z">
 <meta property="article:author" content="Kuo">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://yoursite.com/.com//clion-make.JPG">
@@ -201,14 +202,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.2k</span>
+              <span>2.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
+              <span>5 分钟</span>
             </span>
 
         </div>
@@ -259,6 +260,13 @@
 2.Boot loader执行的最后一条指令是什么，刚加载的内核的第一条指令是什么?<br>
 3.内核的第一条指令在哪里?<br>
 4.Boot loader如何确定为了从磁盘获取整个内核而必须读取多少个扇区？ 它在哪里找到此信息?</p>
+<h2 id="回答">回答</h2>
+<p>1.16位切换到32位：<br>
+文件boot/boot.S开头的注释，表明这个文件的作用就是切换至32-bit保护模式，并跳转到C代码。</p>
+<p>其中55行的ljmp指令就是让CPU进入32位保护模式的指令。</p>
+<p>查看反汇编代码obj/boot/boot.asm77行，可以看到，ljmp指令被转化成了两个指令，第二个指令计算了一个加法，把结果存在寄存器bh中。可以推测，是第一个指令让CPU进入了32-bit模式。</p>
+<p>2.引导器的最后一条指令 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">((void (*)(void)) (ELFHDR-&gt;e_entry))();</span><br></pre></td></tr></table></figure> 这里将一个变量转化为函数指针，并调用这个函数。查看反汇编代码307行，程序跳转到地址*0x10018。也即实际的地址需要从地址0x10018中读取出来，在bootmain函数最后一行打断点，并监听ELFHDR的值，可以看到ELFHDR-&gt;e_entry的值为1048588。 <img src="/.com//e_entry.JPG" alt="e_entry"></p>
+<p>转化为十六进制，就是0x10000c。</p>
 
     </div>
 
@@ -336,7 +344,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#part-1-环境搭建"><span class="nav-number">1.</span> <span class="nav-text">Part 1 环境搭建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#part-2-boot-loader"><span class="nav-number">2.</span> <span class="nav-text">Part 2 Boot Loader</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#练习"><span class="nav-number">2.1.</span> <span class="nav-text">练习</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#part-1-环境搭建"><span class="nav-number">1.</span> <span class="nav-text">Part 1 环境搭建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#part-2-boot-loader"><span class="nav-number">2.</span> <span class="nav-text">Part 2 Boot Loader</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#练习"><span class="nav-number">2.1.</span> <span class="nav-text">练习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#回答"><span class="nav-number">2.2.</span> <span class="nav-text">回答</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
