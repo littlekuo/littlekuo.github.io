@@ -34,8 +34,9 @@
 <meta property="og:image" content="http://yoursite.com/images/6-828-Lab1/bios-rom.JPG">
 <meta property="og:image" content="http://yoursite.com/images/6-828-Lab1/phyAdrss.JPG">
 <meta property="og:image" content="http://yoursite.com/images/6-828-Lab1/e_entry.JPG">
+<meta property="og:image" content="http://yoursite.com/images/6-828-Lab1/phy1000c.JPG">
 <meta property="article:published_time" content="2020-11-03T05:58:10.000Z">
-<meta property="article:modified_time" content="2020-11-03T07:52:42.639Z">
+<meta property="article:modified_time" content="2020-11-03T08:12:01.305Z">
 <meta property="article:author" content="Kuo">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://yoursite.com/images/6-828-Lab1/clion-make.JPG">
@@ -202,7 +203,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.6k</span>
+              <span>2.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -259,11 +260,16 @@
 4.Boot loader如何确定为了从磁盘获取整个内核而必须读取多少个扇区？ 它在哪里找到此信息?</p>
 <h2 id="回答">回答</h2>
 <p>1.16位切换到32位：<br />
-文件boot/boot.S开头的注释，表明这个文件的作用就是切换至32-bit保护模式，并跳转到C代码。</p>
-<p>其中55行的ljmp指令就是让CPU进入32位保护模式的指令。</p>
-<p>查看反汇编代码obj/boot/boot.asm77行，可以看到，ljmp指令被转化成了两个指令，第二个指令计算了一个加法，把结果存在寄存器bh中。可以推测，是第一个指令让CPU进入了32-bit模式。</p>
-<p>2.引导器的最后一条指令 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">((void (*)(void)) (ELFHDR-&gt;e_entry))();</span><br></pre></td></tr></table></figure> 这里将一个变量转化为函数指针，并调用这个函数。查看反汇编代码307行，程序跳转到地址*0x10018。也即实际的地址需要从地址0x10018中读取出来，在bootmain函数最后一行打断点，并监听ELFHDR的值，可以看到ELFHDR-&gt;e_entry的值为1048588。 <img src="/images/6-828-Lab1/e_entry.JPG" alt="e_entry" /></p>
-<p>转化为十六进制，就是0x10000c。</p>
+文件boot/boot.S开头的注释，表明这个文件的作用就是切换至32-bit保护模式，并跳转到C代码。<br />
+其中55行的ljmp指令就是让CPU进入32位保护模式的指令。<br />
+查看反汇编代码obj/boot/boot.asm77行，可以看到，ljmp指令被转化成了两个指令，第二个指令计算了一个加法，把结果存在寄存器bh中。可以推测，是第一个指令让CPU进入了32-bit模式。<br />
+2.引导器的最后一条指令 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">((void (*)(void)) (ELFHDR-&gt;e_entry))();</span><br></pre></td></tr></table></figure> 这里将一个变量转化为函数指针，并调用这个函数。查看反汇编代码307行，程序跳转到地址*0x10018。也即实际的地址需要从地址0x10018中读取出来，可以在bootmain函数的最后一行打断点，并监听ELFHDR的值，看到ELFHDR-&gt;e_entry的值为1048588，其转化为十六进制，就是0x10000c。</p>
+<figure>
+<img src="/images/6-828-Lab1/e_entry.JPG" alt="" /><figcaption>e_entry</figcaption>
+</figure>
+<p>查看反汇编代码obj/kern/kernel.asm，可以看到19行显示，内核第一个指令的地址是0xf010000c，而C代码中函数跳转是到0x10000c，这是因为前者是虚拟地址，后者是物理地址。</p>
+<p><img src="/images/6-828-Lab1/phy1000c.JPG" /></p>
+<p>3.dsd</p>
 
     </div>
 
