@@ -224,11 +224,11 @@
 </ul></li>
 </ol>
 <p>5.The ROM BIOS: 首先执行qemu-nox-gdb，然后执行前面设置的gdb-remote <img src="/images/6-828-Lab1/bios-rom.JPG" /> 可以看到，第一个执行的指令是ljmp，地址在 0xffff0，写成 (CS:IP) 形式就是 [f000:fff0] 。得到如下信息： - 计算机启动后从 0xffff0 开始执行指令，也就是CS = 0xf000,IP = 0xfff0 (real mode下地址转换规则：physical address = 16 * segment + offset)</p>
-<p>BISO映射到物理内存的 0xF0000-0x100000，不难算出 0xffff0 和BIOS映射区的顶部 0x100000 只差16, 16个字节并不能做什么，因此需要跳转，也即ljmp。 <img src="/images/6-828-Lab1/phyAdrss.JPG" /></p>
+<p>BIOS映射到物理内存的 0xF0000-0x100000，不难算出 0xffff0 和BIOS映射区的顶部 0x100000 只差16, 16个字节并不能做什么，因此需要跳转，也即ljmp。 <img src="/images/6-828-Lab1/phyAdrss.JPG" /></p>
 <h1 id="part-2-boot-loader">Part 2 Boot Loader</h1>
-<p>为了简单起见，6.828所使用的引导方式，依旧是BIOS。</p>
-<p>BIOS在初始化PCI总线和其知道的所有重要设备后，会查找可以引导的 (Bootable) 设备，将这个设备的第一个区块sector(boot loader位于其中)读取进入内存，然后将控制权移交给 boot loader</p>
-<p>此项目中，boot Loader是两个文件，一个是汇编代码boot/boot.S，一个是C文件boot/main.c。其一共做了两件事情：</p>
+<p>为了简单起见，6.828所使用的引导方式依旧是BIOS。</p>
+<p>BIOS在初始化PCI总线和其知道的所有重要设备后，会查找可以引导的 (Bootable) 设备，将这个设备的第一个区块sector(boot loader位于其中)读取进入内存，然后将控制权移交给 boot loader。</p>
+<p>此项目中，boot Loader由两个文件组成，一个是汇编代码boot/boot.S，一个是C文件boot/main.c。其共做了两件事情：</p>
 <ul>
 <li>将CPU由real mode 切换到 protected mode。如之前所说，CPU启动时处于real mode，这样可以很方便地运行BIOS。但要使用所有的硬件功能，还是要切换到protected mode才可以。</li>
 <li>将内核由硬盘读进内存。内核存在于硬盘上的某个位置，引导器一定知道内核在哪里、有多大，并且将内核读取进入内存中，然后开始执行内核。这也是ELF文件的加载。</li>
