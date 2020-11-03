@@ -223,8 +223,8 @@
   在此之前，需要放开安全限制，让gdb放心地读当前目录下的文件。在当前用户home目录下创建.gdbinit文件，配置如下内容： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set auto-load safe-path &#x2F;</span><br></pre></td></tr></table></figure>   此外还需要修改配置以避免配置之间的冲突。具体来说，target remote在CLion中必须配置，故我们需要在.gdbinit和.gdbinit.tmpl中将22，23行的相应配置注释掉 <img src="/images/6-828-Lab1/gdbinit.JPG" alt="gdbinit" />    .gdbinit中指定的symbol-file才能参与调试。内核和引导器没有编译在同一个文件中，默认情况下，Symbol File指定的是内核而不是引导器。若需要在boot目录下的文件中打断点，就必须更改symbol file为引导器的编译结果obj/boot/boot.out。一个gdb配置文件只能设置一个symbol file，后出现的配置会覆盖前出现的配置。</li>
 </ul></li>
 </ol>
-<p>5.The ROM BIOS, 先执行qemu-nox-gdb，然后执行前面设置的gdb-remote <img src="/images/6-828-Lab1/bios-rom.JPG" alt="bions" /> 可以看到，第一个执行的指令是ljmp ，地址在 0xffff0，写成 (CS:IP) 形式就是 [f000:fff0] 。可以得到如下信息： - 计算机启动后从 0xffff0 开始执行指令，也就是CS = 0xf000,IP = 0xfff0 (real mode下的地址转换规则，physical address = 16 * segment + offset )</p>
-<p>BISO映射到物理内存的 0xF0000-0x100000，不难算出 0xffff0 和BIOS映射区的顶部 0x100000 只差16, 16个字节并不能做什么，因此需要跳转，也即ljmp</p>
+<p>5.The ROM BIOS: 首先执行qemu-nox-gdb，然后执行前面设置的gdb-remote <img src="/images/6-828-Lab1/bios-rom.JPG" alt="bions" /> 可以看到，第一个执行的指令是ljmp，地址在 0xffff0，写成 (CS:IP) 形式就是 [f000:fff0] 。得到如下信息： - 计算机启动后从 0xffff0 开始执行指令，也就是CS = 0xf000,IP = 0xfff0 (real mode下地址转换规则：physical address = 16 * segment + offset)</p>
+<p>BISO映射到物理内存的 0xF0000-0x100000，不难算出 0xffff0 和BIOS映射区的顶部 0x100000 只差16, 16个字节并不能做什么，因此需要跳转，也即ljmp。</p>
 <figure>
 <img src="/images/6-828-Lab1/phyAdrss.JPG" alt="" /><figcaption>phyaddrss</figcaption>
 </figure>
