@@ -202,56 +202,51 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="Part-1-环境搭建"><a href="#Part-1-环境搭建" class="headerlink" title="Part 1 环境搭建"></a>Part 1 环境搭建</h1><ol>
-<li><p>安装基本的编译调试工具，gcc, gdb, qemu</p>
-</li>
-<li><p>建议使用IDE，如vscode或clion，这里我使用的是clion，然后去clion的插件市场安装makefile support，安装完成后右侧会有一个 make 菜单如下。</p>
-<img src="/.com//11/03/6-828-Lab1/clion-make.JPG" class title="This is an image">
-<p><a href="clion-make.JPG">clion-make</a></p>
-</li>
-<li><p>使用makefile。</p>
+          <h1 id="part-1-环境搭建">Part 1 环境搭建</h1>
+<ol type="1">
+<li>安装基本的编译调试工具，gcc, gdb, qemu</li>
+<li>建议使用IDE，如vscode或clion，这里我使用的是clion，然后去clion的插件市场安装makefile support，安装完成后右侧会有一个 make 菜单如下。 <img src="/.com//11/03/6-828-Lab1/clion-make.JPG" class title="This is an image"> <a href="clion-make.JPG">clion-make</a></li>
+<li>使用makefile。
 <ul>
 <li>编译 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">% sudo make all</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">可能报错：</span><br><span class="line">ld: warning: section &#96;.bss&#39; type changed to PROGBITS</span><br><span class="line">obj&#x2F;kern&#x2F;printfmt.o: In function &#96;printnum&#39;:</span><br><span class="line">lib&#x2F;printfmt.c:41: undefined reference to &#96;__udivdi3&#39;</span><br><span class="line">lib&#x2F;printfmt.c:49: undefined reference to &#96;__umoddi3&#39;</span><br><span class="line">kern&#x2F;Makefrag:70: recipe for target &#39;obj&#x2F;kern&#x2F;kernel&#39; failed</span><br><span class="line">make: *** [obj&#x2F;kern&#x2F;kernel] Error 1</span><br><span class="line">解决方法：</span><br><span class="line">% sudo apt-get install gcc-4.8-multilib</span><br></pre></td></tr></table></figure></li>
-<li>运行<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make qemu 或者 make qemu-nox</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>断点调试</p>
+<li>运行 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make qemu 或者 make qemu-nox</span><br></pre></td></tr></table></figure></li>
+</ul></li>
+<li>断点调试
 <ul>
-<li><p>建议使用CLion自带的Remote GDB Server配置，先点击”Edit Configurations”添加配置，然后新添加”GDB Remote Debug”<br> <img src="/.com//gdb-server1.JPG" alt="gdb-server1"><br> <img src="/.com//gdb-server2.JPG" alt="gdb-server2"><br> 注意： </p>
+<li>建议使用CLion自带的Remote GDB Server配置，先点击"Edit Configurations"添加配置，然后新添加"GDB Remote Debug" <img src="/images/6-828-Lab1/gdb-server1.JPG" alt="gdb-server1"> <img src="/.com//gdb-server2.JPG" alt="gdb-server2"> 注意：
 <ul>
 <li>名称：随便取一个，这里叫做gdb-remote</li>
 <li>GDB：默认的gdb是CLion自带，需要改成系统安装的，和qemu启动的服务保持一致，路径填为/usr/bin/gdb就好</li>
-<li>‘target remote’ args：指定了调试服务器的IP和端口，IP是localhost不用多说，此处端口要和qemu启动的端口一致。查看项目根目录下的.gdbinit文件，在22行左右可以看到端口号为26000号端口</li>
-</ul>
-<ul>
-<li>使用配置文件.gdbinit，在终端运行gdb时，gdb会查找当前目录下是否有名为.gdbinit的文件，若有则自动读取配置，从而简化在终端写gdb参数的操作。在此项目中，运行make qemu-nox-gdb后会自动生成一个.gdbinit。<br>&nbsp;&nbsp;在此之前，需要放开安全限制，让gdb放心地读当前目录下的文件。在当前用户home目录下创建.gdbinit文件，配置如下内容： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set auto-load safe-path &#x2F;</span><br></pre></td></tr></table></figure>
- &nbsp;&nbsp;此外还需要修改配置以避免配置之间的冲突。具体来说，target remote在CLion中必须配置，故我们需要在.gdbinit和.gdbinit.tmpl中将22，23行的相应配置注释掉<br> <img src="/.com//gdbinit.JPG" alt="gdbinit"><br> &nbsp;&nbsp; .gdbinit中指定的symbol-file才能参与调试。内核和引导器没有编译在同一个文件中，默认情况下，Symbol File指定的是内核而不是引导器。若需要在boot目录下的文件中打断点，就必须更改symbol file为引导器的编译结果obj/boot/boot.out。一个gdb配置文件只能设置一个symbol file，后出现的配置会覆盖前出现的配置。</li>
-</ul>
-</li>
-</ul>
-</li>
+<li>'target remote' args：指定了调试服务器的IP和端口，IP是localhost不用多说，此处端口要和qemu启动的端口一致。查看项目根目录下的.gdbinit文件，在22行左右可以看到端口号为26000号端口</li>
+</ul></li>
+<li>使用配置文件.gdbinit，在终端运行gdb时，gdb会查找当前目录下是否有名为.gdbinit的文件，若有则自动读取配置，从而简化在终端写gdb参数的操作。在此项目中，运行make qemu-nox-gdb后会自动生成一个.gdbinit。<br>
+  在此之前，需要放开安全限制，让gdb放心地读当前目录下的文件。在当前用户home目录下创建.gdbinit文件，配置如下内容： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set auto-load safe-path &#x2F;</span><br></pre></td></tr></table></figure>   此外还需要修改配置以避免配置之间的冲突。具体来说，target remote在CLion中必须配置，故我们需要在.gdbinit和.gdbinit.tmpl中将22，23行的相应配置注释掉 <img src="/.com//gdbinit.JPG" alt="gdbinit">    .gdbinit中指定的symbol-file才能参与调试。内核和引导器没有编译在同一个文件中，默认情况下，Symbol File指定的是内核而不是引导器。若需要在boot目录下的文件中打断点，就必须更改symbol file为引导器的编译结果obj/boot/boot.out。一个gdb配置文件只能设置一个symbol file，后出现的配置会覆盖前出现的配置。</li>
+</ul></li>
 </ol>
-<p>5.The ROM BIOS, 先执行qemu-nox-gdb，然后执行前面设置的gdb-remote<br><img src="/.com//bios-rom.JPG" alt="bions"><br>可以看到，第一个执行的指令是ljmp ，地址在 0xffff0，写成 (CS:IP) 形式就是 [f000:fff0] 。可以得到如下信息：</p>
-<ul>
-<li>计算机启动后从 0xffff0 开始执行指令，也就是CS = 0xf000,IP = 0xfff0 (real mode下的地址转换规则，physical address = 16 * segment + offset )</li>
-</ul>
+<p>5.The ROM BIOS, 先执行qemu-nox-gdb，然后执行前面设置的gdb-remote <img src="/.com//bios-rom.JPG" alt="bions"> 可以看到，第一个执行的指令是ljmp ，地址在 0xffff0，写成 (CS:IP) 形式就是 [f000:fff0] 。可以得到如下信息： - 计算机启动后从 0xffff0 开始执行指令，也就是CS = 0xf000,IP = 0xfff0 (real mode下的地址转换规则，physical address = 16 * segment + offset )</p>
 <p>BISO映射到物理内存的 0xF0000-0x100000，不难算出 0xffff0 和BIOS映射区的顶部 0x100000 只差16, 16个字节并不能做什么，因此需要跳转，也即ljmp</p>
-<p><img src="/.com//phyAdrss.JPG" alt="phyaddrss"> </p>
-<h1 id="Part-2-Boot-Loader"><a href="#Part-2-Boot-Loader" class="headerlink" title="Part 2 Boot Loader"></a>Part 2 Boot Loader</h1><p>为了简单起见，6.828所使用的引导方式，依旧是BIOS。</p>
+<figure>
+<img src="/.com//phyAdrss.JPG" alt><figcaption>phyaddrss</figcaption>
+</figure>
+<h1 id="part-2-boot-loader">Part 2 Boot Loader</h1>
+<p>为了简单起见，6.828所使用的引导方式，依旧是BIOS。</p>
 <p>BIOS在初始化PCI总线和其知道的所有重要设备后，会查找可以引导的 (Bootable) 设备，将这个设备的第一个区块sector(boot loader位于其中)读取进入内存，然后将控制权移交给 boot loader</p>
 <p>此项目中，boot Loader是两个文件，一个是汇编代码boot/boot.S，一个是C文件boot/main.c。其一共做了两件事情：</p>
 <ul>
 <li>将CPU由real mode 切换到 protected mode。如之前所说，CPU启动时处于real mode，这样可以很方便地运行BIOS。但要使用所有的硬件功能，还是要切换到protected mode才可以。</li>
-<li>将内核由硬盘读进内存。内核存在于硬盘上的某个位置，引导器一定知道内核在哪里、有多大，并且将内核读取进入内存中，然后开始执行内核。这也是ELF文件的加载。 </li>
+<li>将内核由硬盘读进内存。内核存在于硬盘上的某个位置，引导器一定知道内核在哪里、有多大，并且将内核读取进入内存中，然后开始执行内核。这也是ELF文件的加载。</li>
 </ul>
-<h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><p>1.处理器从什么时候开始执行32位代码？ 究竟是什么原因导致从16位模式切换到32位模式?<br>2.Boot loader执行的最后一条指令是什么，刚加载的内核的第一条指令是什么?<br>3.内核的第一条指令在哪里?<br>4.Boot loader如何确定为了从磁盘获取整个内核而必须读取多少个扇区？ 它在哪里找到此信息?</p>
-<h2 id="回答"><a href="#回答" class="headerlink" title="回答"></a>回答</h2><p>1.16位切换到32位：<br>文件boot/boot.S开头的注释，表明这个文件的作用就是切换至32-bit保护模式，并跳转到C代码。</p>
+<h2 id="练习">练习</h2>
+<p>1.处理器从什么时候开始执行32位代码？ 究竟是什么原因导致从16位模式切换到32位模式?<br>
+2.Boot loader执行的最后一条指令是什么，刚加载的内核的第一条指令是什么?<br>
+3.内核的第一条指令在哪里?<br>
+4.Boot loader如何确定为了从磁盘获取整个内核而必须读取多少个扇区？ 它在哪里找到此信息?</p>
+<h2 id="回答">回答</h2>
+<p>1.16位切换到32位：<br>
+文件boot/boot.S开头的注释，表明这个文件的作用就是切换至32-bit保护模式，并跳转到C代码。</p>
 <p>其中55行的ljmp指令就是让CPU进入32位保护模式的指令。</p>
 <p>查看反汇编代码obj/boot/boot.asm77行，可以看到，ljmp指令被转化成了两个指令，第二个指令计算了一个加法，把结果存在寄存器bh中。可以推测，是第一个指令让CPU进入了32-bit模式。</p>
-<p>2.引导器的最后一条指令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">((void (*)(void)) (ELFHDR-&gt;e_entry))();</span><br></pre></td></tr></table></figure>
-<p>这里将一个变量转化为函数指针，并调用这个函数。查看反汇编代码307行，程序跳转到地址*0x10018。也即实际的地址需要从地址0x10018中读取出来，在bootmain函数最后一行打断点，并监听ELFHDR的值，可以看到ELFHDR-&gt;e_entry的值为1048588。<br><img src="/.com//e_entry.JPG" alt="e_entry"></p>
+<p>2.引导器的最后一条指令 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">((void (*)(void)) (ELFHDR-&gt;e_entry))();</span><br></pre></td></tr></table></figure> 这里将一个变量转化为函数指针，并调用这个函数。查看反汇编代码307行，程序跳转到地址*0x10018。也即实际的地址需要从地址0x10018中读取出来，在bootmain函数最后一行打断点，并监听ELFHDR的值，可以看到ELFHDR-&gt;e_entry的值为1048588。 <img src="/.com//e_entry.JPG" alt="e_entry"></p>
 <p>转化为十六进制，就是0x10000c。</p>
 
       
@@ -1095,7 +1090,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">25 分钟</span>
+    <span title="站点阅读时长">24 分钟</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>
