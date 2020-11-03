@@ -27,16 +27,17 @@
 <meta property="og:site_name" content="月落星稀">
 <meta property="og:description" content="Part 1 环境搭建  安装基本的编译调试工具，gcc, gdb, qemu 建议使用IDE，如vscode或clion，这里我使用的是clion，然后去clion的插件市场安装makefile support，安装完成后右侧会有一个 make 菜单如下。 clion-make 使用makefile。  编译 123456789101112% sudo make all可能报错：ld">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/.com//gdb-server1.JPG">
 <meta property="og:image" content="http://yoursite.com/.com//gdb-server2.JPG">
 <meta property="og:image" content="http://yoursite.com/.com//gdbinit.JPG">
 <meta property="og:image" content="http://yoursite.com/.com//bios-rom.JPG">
 <meta property="og:image" content="http://yoursite.com/.com//phyAdrss.JPG">
 <meta property="og:image" content="http://yoursite.com/.com//e_entry.JPG">
 <meta property="article:published_time" content="2020-11-03T05:58:10.000Z">
-<meta property="article:modified_time" content="2020-11-03T07:10:08.142Z">
+<meta property="article:modified_time" content="2020-11-03T07:17:43.792Z">
 <meta property="article:author" content="Kuo">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/.com//gdb-server2.JPG">
+<meta name="twitter:image" content="http://yoursite.com/.com//gdb-server1.JPG">
 
 <link rel="canonical" href="http://yoursite.com/2020/11/03/6-828-Lab1/">
 
@@ -230,7 +231,7 @@
 </ul></li>
 <li>断点调试
 <ul>
-<li>建议使用CLion自带的Remote GDB Server配置，先点击"Edit Configurations"添加配置，然后新添加"GDB Remote Debug" <a href="6-828-Lab1/gdb-server1.JPG">gdb-server1</a> <img src="/.com//gdb-server2.JPG" alt="gdb-server2"> 注意：
+<li>建议使用CLion自带的Remote GDB Server配置，先点击"Edit Configurations"添加配置，然后新添加"GDB Remote Debug" <img src="/.com//gdb-server1.JPG" alt="gdb-server1"> <img src="/.com//gdb-server2.JPG" alt="gdb-server2"> 注意：
 <ul>
 <li>名称：随便取一个，这里叫做gdb-remote</li>
 <li>GDB：默认的gdb是CLion自带，需要改成系统安装的，和qemu启动的服务保持一致，路径填为/usr/bin/gdb就好</li>
@@ -414,7 +415,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">25 分钟</span>
+    <span title="站点阅读时长">24 分钟</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>
