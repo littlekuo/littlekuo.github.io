@@ -183,7 +183,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2k</span>
+              <span>2.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -229,9 +229,18 @@
 <img src="/.com//phyAdrss.JPG" alt><figcaption>phyaddrss</figcaption>
 </figure>
 <h1 id="part-2-boot-loader">Part 2 Boot Loader</h1>
-<p>6.828所使用的引导方式，依旧是BIOS，以求简单。</p>
-<p>BIOS初始化IO完成之后，查看各个存储设备，包括软盘、磁盘、SSD，以及USB连接的各种设备，找到可以引导的 (Bootable) 设备，将这个设备的第一个区块sector读取进入内存，并开始执行读取进来的内容。</p>
-<p>在本项目中，BIOS读进来的是内核引导器，而不是内核本身。BIOS引导了内核引导器，内核引导器再引导内核。如果要使用BIOS，就必须将内核引导器放置在设备的第一个sector中，这样BIOS才能够找到。我们的项目中，内核引导器是两个文件，一个是汇编代码boot/boot.S，一个是C文件boot/main.c。它一共做了两件事情：</p>
+<p>为了简单起见，6.828所使用的引导方式，依旧是BIOS。</p>
+<p>BIOS在初始化PCI总线和其知道的所有重要设备后，会查找可以引导的 (Bootable) 设备，将这个设备的第一个区块sector(boot loader位于其中)读取进入内存，然后将控制权移交给 boot loader</p>
+<p>此项目中，boot Loader是两个文件，一个是汇编代码boot/boot.S，一个是C文件boot/main.c。其一共做了两件事情：</p>
+<ul>
+<li>将CPU由real mode 切换到 protected mode。如之前所说，CPU启动时处于real mode，这样可以很方便地运行BIOS。但要使用所有的硬件功能，还是要切换到protected mode才可以。</li>
+<li>将内核由硬盘读进内存。内核存在于硬盘上的某个位置，引导器一定知道内核在哪里、有多大，并且将内核读取进入内存中，然后开始执行内核。这也是ELF文件的加载。</li>
+</ul>
+<h2 id="练习">练习</h2>
+<p>1.处理器从什么时候开始执行32位代码？ 究竟是什么原因导致从16位模式切换到32位模式?<br>
+2.Boot loader执行的最后一条指令是什么，刚加载的内核的第一条指令是什么?<br>
+3.内核的第一条指令在哪里?<br>
+4.Boot loader如何确定为了从磁盘获取整个内核而必须读取多少个扇区？ 它在哪里找到此信息?</p>
 
       
     </div>
@@ -1074,7 +1083,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">23 分钟</span>
+    <span title="站点阅读时长">24 分钟</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>
