@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Kick Start 2013共有三轮，分别如下： Practice Round 2013">
+  <meta name="description" content="Kick Start 2013共有三轮，分别如下： Practice Round 2013 Moist 题意：机器人从上到下扫描一副牌。每当它发现一张比前一张在词法上更小的卡片时， 它就会把这张卡片移到上面一叠卡片的正确位置。这个操作需要花费1美元，机器人会继续朝牌堆底部扫描， 逐一移动卡片，直到整副牌堆从上到下按照词典顺序排序。 12345678910111213141516171819">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Kick Start 2013">
 <meta property="og:url" content="http://yoursite.com/2021/02/25/Kick%20Start%202013/index.html">
 <meta property="og:site_name" content="月落星稀">
-<meta property="og:description" content="Kick Start 2013共有三轮，分别如下： Practice Round 2013">
+<meta property="og:description" content="Kick Start 2013共有三轮，分别如下： Practice Round 2013 Moist 题意：机器人从上到下扫描一副牌。每当它发现一张比前一张在词法上更小的卡片时， 它就会把这张卡片移到上面一叠卡片的正确位置。这个操作需要花费1美元，机器人会继续朝牌堆底部扫描， 逐一移动卡片，直到整副牌堆从上到下按照词典顺序排序。 12345678910111213141516171819">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-02-25T05:58:10.000Z">
-<meta property="article:modified_time" content="2021-02-25T08:22:04.318Z">
+<meta property="article:modified_time" content="2021-02-25T10:49:38.609Z">
 <meta property="article:author" content="Kuo">
 <meta name="twitter:card" content="summary">
 
@@ -194,7 +194,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>40</span>
+              <span>630</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -215,6 +215,10 @@
       
         <p>Kick Start 2013共有三轮，分别如下：</p>
 <h1 id="practice-round-2013">Practice Round 2013</h1>
+<h2 id="moist">Moist</h2>
+<p>题意：机器人从上到下扫描一副牌。每当它发现一张比前一张在词法上更小的卡片时， 它就会把这张卡片移到上面一叠卡片的正确位置。这个操作需要花费1美元，机器人会继续朝牌堆底部扫描， 逐一移动卡片，直到整副牌堆从上到下按照词典顺序排序。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> t;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; t;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; t; i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> n, res = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; s;</span><br><span class="line">        <span class="built_in">cin</span> &gt;&gt; n;</span><br><span class="line"></span><br><span class="line">        getchar();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n; j++)&#123;</span><br><span class="line">            <span class="built_in">string</span> str;</span><br><span class="line">            getline(<span class="built_in">cin</span>, str);        </span><br><span class="line">            <span class="keyword">if</span>(s.size() &amp;&amp; str &lt; s.back()) res++;</span><br><span class="line">            s.push_back(str);</span><br><span class="line">            sort(s.begin(), s.end());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"Case #"</span> &lt;&lt; i + <span class="number">1</span> &lt;&lt; <span class="string">": "</span> &lt;&lt; res &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="section"></h2>
 
     </div>
 
@@ -292,7 +296,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#practice-round-2013"><span class="nav-number">1.</span> <span class="nav-text">Practice Round 2013</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#practice-round-2013"><span class="nav-number">1.</span> <span class="nav-text">Practice Round 2013</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#moist"><span class="nav-number">1.1.</span> <span class="nav-text">Moist</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#section"><span class="nav-number">1.2.</span> <span class="nav-text"></span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -350,7 +354,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -359,12 +363,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">12k</span>
+    <span title="站点总字数">13k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">24 分钟</span>
+    <span title="站点阅读时长">25 分钟</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>
